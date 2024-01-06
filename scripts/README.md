@@ -35,8 +35,8 @@ Plotting
 In the `./plotting` directory. In the following, "output" refers to output files
 created by running the hydro code. They typically have the suffix `.out`.
 
-Plotting Hydro/Advection Output
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+### Plotting Hydro/Advection Output
 
 - `movie_density.py`: Plot the density of all given output files. You need to
   fix some parameters manually in the script so that the images are standardized
@@ -65,8 +65,7 @@ Plotting Hydro/Advection Output
 
 
 
-Plotting Riemann Solver Output
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+### Plotting Riemann Solver Output
 
 - `plot_riemann_result.py`: Plot the output of a two-state/Riemann problem, and
   overplot analytical solution.
@@ -80,8 +79,7 @@ Plotting Riemann Solver Output
 
 
 
-Plotting Initial Conditions
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+### Plotting Initial Conditions
 
 - `plot_IC_3D.py`: Plot some initial conditions file. Plot 2D IC in a 3D surface
   plot.
