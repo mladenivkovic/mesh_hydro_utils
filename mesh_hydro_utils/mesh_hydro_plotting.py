@@ -357,9 +357,7 @@ def plot_savefig(fig, fname=None, case=None, fname_force=None):
         print("Saved figure", fname_force)
 
     else:
-
         if fname is not None:
-
             ax = fig.axes[0]
             if len(ax.get_lines()) > 1:
                 # if we have more than one line, this figure is used to overplot things.
