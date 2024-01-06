@@ -9,10 +9,13 @@ set -e
 # ======================================
 
 # turn sets of tests on and off
+
 # test IC scripts?
-# test_ICs=true
+test_ICs=true
+
 # test misc scripts?
-# test_misc=true
+test_misc=true
+
 # test plotting scripts?
 test_plot=true
 
@@ -107,6 +110,10 @@ fi
 
 
 
+
+# ======================================
+# Plotting tests
+# ======================================
 
 if [[ "$test_plot" == "true" ]]; then
 

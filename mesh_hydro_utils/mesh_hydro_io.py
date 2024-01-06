@@ -85,8 +85,8 @@ def read_output(fname):
             quit(1)
 
         line = f.readline()
-        clean = remove_python_style_comments(line)
-        if line_is_empty(clean):
+        clean = _remove_python_style_comments(line)
+        if _line_is_empty(clean):
             continue
 
         else:
@@ -147,19 +147,19 @@ def read_ic(fname, nx=100):
     """
 
     check_file_exists(fname)
-    twostate = get_ic_filetype(fname)
+    twostate = _get_ic_filetype(fname)
 
     if twostate:
         ndim = 1
-        rho, u, p = read_twostate_ic(fname, nx)
+        rho, u, p = _read_twostate_ic(fname, nx)
 
     else:
-        ndim, rho, u, p = read_arbitrary_ic(fname)
+        ndim, rho, u, p = _read_arbitrary_ic(fname)
 
     return ndim, twostate, rho, u, p
 
 
-def read_arbitrary_ic(fname):
+def _read_arbitrary_ic(fname):
     """
     read the complete arbitrary format IC file
     """
@@ -177,9 +177,9 @@ def read_arbitrary_ic(fname):
     j = 0
 
     for line in data:
-        clean = remove_C_style_comments(line)
-        clean = remove_newline(clean)
-        if line_is_empty(clean):
+        clean = _remove_C_style_comments(line)
+        clean = _remove_newline(clean)
+        if _line_is_empty(clean):
             continue
 
         if not got_header:
@@ -210,7 +210,7 @@ def read_arbitrary_ic(fname):
                     p = np.empty((nx, nx), dtype=np.float)
 
         else:
-            vals = split_columns(clean)
+            vals = _split_columns(clean)
 
             if ndim == 1:
                 if len(vals) != 3:
@@ -260,7 +260,7 @@ def read_arbitrary_ic(fname):
     return ndim, rho, u, p
 
 
-def read_twostate_ic(fname, nx):
+def _read_twostate_ic(fname, nx):
     """
     Read complete two-state format style.
     Return rho, u, p arrays with nx elements.
@@ -278,9 +278,9 @@ def read_twostate_ic(fname, nx):
     f.close()
 
     for line in data:
-        clean = remove_C_style_comments(line)
-        clean = remove_newline(clean)
-        if line_is_empty(clean):
+        clean = _remove_C_style_comments(line)
+        clean = _remove_newline(clean)
+        if _line_is_empty(clean):
             continue
         name, eq, value = clean.partition("=")
         name = name.strip()
@@ -330,7 +330,7 @@ def read_twostate_ic(fname, nx):
     return rho, u, p
 
 
-def get_ic_filetype(fname):
+def _get_ic_filetype(fname):
     """
     Get the filetype of the IC file. Returns True if two-state style file, False if arbitrary.
     """
@@ -348,9 +348,9 @@ def get_ic_filetype(fname):
             quit(1)
 
         line = f.readline()
-        clean = remove_C_style_comments(line)
-        clean = remove_newline(clean)
-        if line_is_empty(clean):
+        clean = _remove_C_style_comments(line)
+        clean = _remove_newline(clean)
+        if _line_is_empty(clean):
             continue
 
         else:
@@ -373,7 +373,7 @@ def get_ic_filetype(fname):
                 raise ValueError("Unknown file type '{0}'".format(ftclean))
 
 
-def remove_python_style_comments(line):
+def _remove_python_style_comments(line):
     """
     Remove # if the line starts with it
     """
@@ -384,7 +384,7 @@ def remove_python_style_comments(line):
     return line
 
 
-def remove_C_style_comments(line):
+def _remove_C_style_comments(line):
     """
     Remove all comments (//, /* .. */) from the line
     actually just look for a slash. It has no other business in there.
@@ -400,7 +400,7 @@ def remove_C_style_comments(line):
     return clean
 
 
-def line_is_empty(line):
+def _line_is_empty(line):
     """
     Check whether line contains only spaces and/or newline chars
     """
@@ -422,7 +422,7 @@ def check_file_exists(fname):
     return
 
 
-def remove_newline(line):
+def _remove_newline(line):
     """
     If newline character is the last character of the line, remove it.
     """
@@ -433,7 +433,7 @@ def remove_newline(line):
     return line
 
 
-def split_columns(line, delim=" "):
+def _split_columns(line, delim=" "):
     """
     Split given line (string) into columns defined by the delimiter delim.
     If the delimiter occurs multiple times back - to - back, treat it as

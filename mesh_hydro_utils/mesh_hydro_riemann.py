@@ -1,6 +1,13 @@
 #!/usr/bin/env python3
 
-# An exact Riemann solver and solution sampler
+# ------------------------------------------------------------------------------------------------
+# An exact Riemann solver and solution sampler.
+#
+# For documentation on what is being computed, please refer to the documentation
+#  provided in the mesh-hydro code (https://github.com/mladenivkovic/mesh-hydro/tree)
+#
+# Specifically, look at https://github.com/mladenivkovic/mesh-hydro/tree/master/tex/equations
+# ------------------------------------------------------------------------------------------------
 
 
 import numpy as np
@@ -65,13 +72,13 @@ def riemann_solver(rho, u, p, t):
     else:
         # don't compute square roots of zero, so compute
         # soundspeeds only now
-        aL = soundspeed(pL, rhoL)
-        aR = soundspeed(pR, rhoR)
+        aL = _soundspeed(pL, rhoL)
+        aR = _soundspeed(pR, rhoR)
         if uR - uL >= 2 / GM1 * (aL + aR):
             is_vacuum = True
 
     if not is_vacuum:
-        pstar, ustar = find_star_state(rhoL, uL, pL, rhoR, uR, pR)
+        pstar, ustar = _find_star_state(rhoL, uL, pL, rhoR, uR, pR)
 
     rho_sol = np.empty(rho.shape, dtype=np.float)
     u_sol = np.empty(u.shape, dtype=np.float)
@@ -82,24 +89,24 @@ def riemann_solver(rho, u, p, t):
         x = (i + 0.5) * dx - center
         xt = x / t
         if not is_vacuum:
-            rho_sol[i], u_sol[i], p_sol[i] = sample_solution(
+            rho_sol[i], u_sol[i], p_sol[i] = _sample_solution(
                 rhoL, rhoR, uL, uR, ustar, pL, pR, pstar, xt
             )
         else:
-            rho_sol[i], u_sol[i], p_sol[i] = sample_vacuum_solution(
+            rho_sol[i], u_sol[i], p_sol[i] = _sample_vacuum_solution(
                 rhoL, rhoR, uL, uR, pL, pR, xt
             )
 
     return rho_sol, u_sol, p_sol
 
 
-def sample_solution(rhoL, rhoR, uL, uR, ustar, pL, pR, pstar, xt):
+def _sample_solution(rhoL, rhoR, uL, uR, ustar, pL, pR, pstar, xt):
     """
     Sample the solution at the place xt = x/t
     """
 
-    aL = soundspeed(pL, rhoL)
-    aR = soundspeed(pR, rhoR)
+    aL = _soundspeed(pL, rhoL)
+    aR = _soundspeed(pR, rhoR)
 
     if xt < ustar:
         # we are in the left region
@@ -186,18 +193,18 @@ def sample_solution(rhoL, rhoR, uL, uR, ustar, pL, pR, pstar, xt):
     return rho, u, p
 
 
-def find_star_state(rhoL, uL, pL, rhoR, uR, pR):
+def _find_star_state(rhoL, uL, pL, rhoR, uR, pR):
     """
     Find the star state pressure and velocities following Toro 1999
     returns: pstar, ustar: stare state pressure and velocity
     """
 
-    aL = soundspeed(pL, rhoL)
-    aR = soundspeed(pR, rhoR)
-    AL = A_K(rhoL)
-    AR = A_K(rhoR)
-    BL = B_K(pL)
-    BR = B_K(pR)
+    aL = _soundspeed(pL, rhoL)
+    aR = _soundspeed(pR, rhoR)
+    AL = _A_K(rhoL)
+    AR = _A_K(rhoR)
+    BL = _B_K(pL)
+    BR = _B_K(pR)
 
     # find initial guess for pstar.
     # use Two Rarefaction Approximation
@@ -212,8 +219,10 @@ def find_star_state(rhoL, uL, pL, rhoR, uR, pR):
     diff = 1
     i = 0
     while diff > epsilon:
-        f = f_K(pstar, pL, AL, BL, aL) + f_K(pstar, pR, AR, BR, aR) + uR - uL
-        dfdp = df_Kdp(pstar, rhoL, pL, AL, BL, aL) + df_Kdp(pstar, rhoR, pR, AR, BR, aR)
+        f = _f_K(pstar, pL, AL, BL, aL) + _f_K(pstar, pR, AR, BR, aR) + uR - uL
+        dfdp = _df_Kdp(pstar, rhoL, pL, AL, BL, aL) + _df_Kdp(
+            pstar, rhoR, pR, AR, BR, aR
+        )
         pstar_new = pstar - f / dfdp
         diff = 2 * abs(pstar_new - pstar) / abs(pstar_new + pstar)
         pstar = pstar_new
@@ -229,13 +238,13 @@ def find_star_state(rhoL, uL, pL, rhoR, uR, pR):
 
     print("Found star state pressure after", i, "iterations")
 
-    ustar = uL - f_K(pstar, pL, AL, BL, aL)
+    ustar = uL - _f_K(pstar, pL, AL, BL, aL)
     print("Got pstar = {0:12.6f}, ustar = {1:12.6f}".format(pstar, ustar))
 
     return pstar, ustar
 
 
-def f_K(pstar, pK, AK, BK, aK):
+def _f_K(pstar, pK, AK, BK, aK):
     """
     Compute f_{K=L, R} (See section 3.2 in equations_and_implementation_details.pdf)
     pstar:  p in star region
@@ -252,7 +261,7 @@ def f_K(pstar, pK, AK, BK, aK):
         return 2 * aK / GM1 * ((pstar / pK) ** alpha - 1)
 
 
-def df_Kdp(pstar, rhoK, pK, AK, BK, aK):
+def _df_Kdp(pstar, rhoK, pK, AK, BK, aK):
     """
     Compute  del f_{K=L, R}/dp (See section 3.2 in equations_and_implementation_details.pdf)
     pstar:  p in star region
@@ -269,28 +278,28 @@ def df_Kdp(pstar, rhoK, pK, AK, BK, aK):
         return 1.0 / (aK * rhoK) * (pstar / pK) ** (-0.5 * GP1 / gamma)
 
 
-def A_K(rhoK):
+def _A_K(rhoK):
     """
     Compute A_{L, R}
     """
     return 2 / (GP1 * rhoK)
 
 
-def B_K(pK):
+def _B_K(pK):
     """
     Compute B_{L,R}
     """
     return pK / GP1OGM1
 
 
-def soundspeed(p, rho):
+def _soundspeed(p, rho):
     """
     Compute the sound speed of the gas
     """
     return np.sqrt(p * gamma / rho)
 
 
-def sample_vacuum_solution(rhoL, rhoR, uL, uR, pL, pR, xt):
+def _sample_vacuum_solution(rhoL, rhoR, uL, uR, pL, pR, xt):
     """
     Sample the solution in the presence of vacuum
     """
@@ -300,7 +309,7 @@ def sample_vacuum_solution(rhoL, rhoR, uL, uR, pL, pR, xt):
 
     if rhoL == 0:
         # left vacuum state
-        aR = soundspeed(pR, rhoR)
+        aR = _soundspeed(pR, rhoR)
         SR = uR - 2 * aR / GM1
         SHR = uR + aR
 
@@ -323,7 +332,7 @@ def sample_vacuum_solution(rhoL, rhoR, uL, uR, pL, pR, xt):
 
     elif rhoR == 0:
         # Right vacuum state
-        aL = soundspeed(pL, rhoL)
+        aL = _soundspeed(pL, rhoL)
         SL = uL + 2 * aL / GM1
         SHL = uL - aL
 
@@ -342,8 +351,8 @@ def sample_vacuum_solution(rhoL, rhoR, uL, uR, pL, pR, xt):
             p = pL
     else:
         # Vacuum generating state
-        aL = soundspeed(pL, rhoL)
-        aR = soundspeed(pR, rhoR)
+        aL = _soundspeed(pL, rhoL)
+        aR = _soundspeed(pR, rhoR)
         SL = uL + 2 * aL / GM1
         SR = uR - 2 * aR / GM1
         SHL = uL - aL
