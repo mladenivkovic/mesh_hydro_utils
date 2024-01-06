@@ -10,7 +10,14 @@
 # --------------------------------------------------------
 
 
-from mesh_hydro_utils import read_ic, check_file_exists, riemann_solver, plot_1D, plot_savefig, label_to_kwargs
+from mesh_hydro_utils import (
+    read_ic,
+    check_file_exists,
+    riemann_solver,
+    plot_1D,
+    plot_savefig,
+    label_to_kwargs,
+)
 from sys import argv
 from matplotlib import pyplot as plt
 

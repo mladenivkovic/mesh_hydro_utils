@@ -24,7 +24,9 @@ from mesh_hydro_utils import (
     get_only_cmdlinearg,
     get_all_files_with_same_basename,
     label_to_kwargs,
-    read_output, plot_1D_density_only, plot_savefig
+    read_output,
+    plot_1D_density_only,
+    plot_savefig,
 )
 
 from sys import argv

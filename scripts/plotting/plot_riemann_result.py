@@ -15,7 +15,15 @@
 # ----------------------------------------------------
 
 
-from mesh_hydro_utils import read_ic, read_output, check_file_exists, label_to_kwargs, riemann_solver, plot_1D, plot_savefig
+from mesh_hydro_utils import (
+    read_ic,
+    read_output,
+    check_file_exists,
+    label_to_kwargs,
+    riemann_solver,
+    plot_1D,
+    plot_savefig,
+)
 from sys import argv
 import numpy as np
 

@@ -19,5 +19,5 @@ from .mesh_hydro_riemann import riemann_solver
 from .mesh_hydro_utilities import (
     label_to_kwargs,
     get_all_files_with_same_basename,
-    get_only_cmdlinearg
+    get_only_cmdlinearg,
 )

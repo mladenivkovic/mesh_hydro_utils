@@ -11,9 +11,7 @@
 # ------------------------------------------------------------------------------------
 
 
-from mesh_hydro_utils import (
-    read_output, plot_1D, plot_2D_velnorm, plot_savefig
-)
+from mesh_hydro_utils import read_output, plot_1D, plot_2D_velnorm, plot_savefig
 
 from sys import argv
 import numpy as np

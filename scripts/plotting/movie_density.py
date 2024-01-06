@@ -16,7 +16,12 @@
 # ------------------------------------------------------------------------------------
 
 
-from mesh_hydro_utils import get_only_cmdlinearg, get_all_files_with_same_basename, read_output, plot_get_figname
+from mesh_hydro_utils import (
+    get_only_cmdlinearg,
+    get_all_files_with_same_basename,
+    read_output,
+    plot_get_figname,
+)
 from mpl_toolkits.axes_grid1 import make_axes_locatable, axes_size
 
 from sys import argv

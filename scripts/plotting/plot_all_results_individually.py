@@ -9,9 +9,7 @@
 #   plot_all_results_individually.py <file1> <file2> ... <file N>
 # ------------------------------------------------------------------------------------
 
-from mesh_hydro_utils import (
-    read_output, plot_1D, plot_2D, plot_savefig
-)
+from mesh_hydro_utils import read_output, plot_1D, plot_2D, plot_savefig
 
 from sys import argv
 

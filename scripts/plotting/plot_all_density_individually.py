@@ -11,7 +11,11 @@
 
 
 from mesh_hydro_utils import (
-    read_output, plot_1D_density_only, plot_2D_density_only, plot_savefig, label_to_kwargs
+    read_output,
+    plot_1D_density_only,
+    plot_2D_density_only,
+    plot_savefig,
+    label_to_kwargs,
 )
 
 from sys import argv
