@@ -3,7 +3,7 @@
 """
 
 from .__version__ import __version__
-from .mesh_hydro_io import write_ic, read_output, read_ic
+from .mesh_hydro_io import write_ic, read_output, read_ic, check_file_exists
 
 from .mesh_hydro_plotting import (
     plot_1D,
@@ -19,5 +19,5 @@ from .mesh_hydro_riemann import riemann_solver
 from .mesh_hydro_utilities import (
     label_to_kwargs,
     get_all_files_with_same_basename,
-    get_only_cmdlinearg,
+    get_only_cmdlinearg
 )
