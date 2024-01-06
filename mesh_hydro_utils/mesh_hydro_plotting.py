@@ -368,7 +368,7 @@ def plot_savefig(fig, fname=None, case=None, fname_force=None):
                     # Note: this skips the case "not-overplotted", which is as intended
                     if "overplotted" not in case:
                         case += "-overplotted"
-            fname = get_figname(fname, case)
+            fname = plot_get_figname(fname, case)
         else:
             fname = "hydro-plot.png"
 
@@ -379,7 +379,7 @@ def plot_savefig(fig, fname=None, case=None, fname_force=None):
     return
 
 
-def get_figname(fname, case=None):
+def plot_get_figname(fname, case=None):
     """
     Generate figure name using initial filename fname.
     Remove the file suffix, if present, and add a png.
