@@ -80,9 +80,9 @@ def riemann_solver(rho, u, p, t):
     if not is_vacuum:
         pstar, ustar = _find_star_state(rhoL, uL, pL, rhoR, uR, pR)
 
-    rho_sol = np.empty(rho.shape, dtype=np.float)
-    u_sol = np.empty(u.shape, dtype=np.float)
-    p_sol = np.empty(p.shape, dtype=np.float)
+    rho_sol = np.empty(rho.shape, dtype=float)
+    u_sol = np.empty(u.shape, dtype=float)
+    p_sol = np.empty(p.shape, dtype=float)
 
     center = (nx // 2) * dx  # position of the center
     for i in range(nx):
