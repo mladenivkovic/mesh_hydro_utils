@@ -112,12 +112,12 @@ def read_output(fname):
 
     if ndim == 1:
         rho, u, p = np.loadtxt(
-            fname, usecols=[1, 2, 3], dtype=np.float, unpack=True, skiprows=linecount
+            fname, usecols=[1, 2, 3], dtype=float, unpack=True, skiprows=linecount
         )
 
     elif ndim == 2:
         rho, ux, uy, p = np.loadtxt(
-            fname, usecols=[2, 3, 4, 5], dtype=np.float, unpack=True, skiprows=linecount
+            fname, usecols=[2, 3, 4, 5], dtype=float, unpack=True, skiprows=linecount
         )
 
         rho = rho.reshape((nx, nx))
@@ -200,14 +200,14 @@ def _read_arbitrary_ic(fname):
             got_header = got_ftype and got_nx and got_ndim
             if got_header:
                 if ndim == 1:
-                    rho = np.empty((nx), dtype=np.float)
-                    u = np.empty((nx), dtype=np.float)
-                    p = np.empty((nx), dtype=np.float)
+                    rho = np.empty((nx), dtype=float)
+                    u = np.empty((nx), dtype=float)
+                    p = np.empty((nx), dtype=float)
 
                 elif ndim == 2:
-                    rho = np.empty((nx, nx), dtype=np.float)
-                    u = np.empty((nx, nx, 2), dtype=np.float)
-                    p = np.empty((nx, nx), dtype=np.float)
+                    rho = np.empty((nx, nx), dtype=float)
+                    u = np.empty((nx, nx, 2), dtype=float)
+                    p = np.empty((nx, nx), dtype=float)
 
         else:
             vals = _split_columns(clean)
@@ -315,9 +315,9 @@ def _read_twostate_ic(fname, nx):
 
     # now allocate rho, u, p arrays
 
-    rho = np.empty((nx), dtype=np.float)
-    u = np.empty((nx), dtype=np.float)
-    p = np.empty((nx), dtype=np.float)
+    rho = np.empty((nx), dtype=float)
+    u = np.empty((nx), dtype=float)
+    p = np.empty((nx), dtype=float)
 
     nxhalf = nx // 2
     rho[:nxhalf] = rhoL

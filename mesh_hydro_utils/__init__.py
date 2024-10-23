@@ -1,6 +1,4 @@
-"""
-
-"""
+""" """
 
 from .__version__ import __version__
 from .mesh_hydro_io import write_ic, read_output, read_ic, check_file_exists
