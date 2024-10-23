@@ -17,7 +17,7 @@ license = { file = "LICENSE.txt" }
 classifiers=[
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
     "Operating System :: OS Independent"
 ]
 keywords = [ "finite-volume-method", "cfd", "fluid-dynamics"]
