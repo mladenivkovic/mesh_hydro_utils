@@ -2,8 +2,10 @@
 requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
+
 [tool.setuptools]
 packages = ["mesh_hydro_utils"]
+
 
 [project]
 name = "mesh_hydro_utils"
@@ -18,14 +20,30 @@ classifiers=[
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
-    "Operating System :: OS Independent"
-]
-keywords = [ "finite-volume-method", "cfd", "fluid-dynamics"]
-dependencies=[ "matplotlib", "numpy" ]
+    "Operating System :: OS Independent",
+    ]
+keywords = [
+    "finite-volume-method",
+    "cfd",
+    "fluid-dynamics",
+    "IO",
+    ]
+dependencies=[
+    "matplotlib",
+    "numpy",
+    ]
+
+[project.optional-dependencies]
+hdf5 = ["h5py"]
 
 
 [project.urls]
 "Homepage" = "https://github.com/mladenivkovic/mesh_hydro_utils"
+
+
+
+# ------------------------------------------------------------------------------
+# bumpver: automatically bump package version.
 
 [tool.bumpver]
 current_version = "0.1.0"
