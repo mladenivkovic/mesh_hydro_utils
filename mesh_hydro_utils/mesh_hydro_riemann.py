@@ -46,7 +46,7 @@ def riemann_solver(rho, u, p, t):
     nx = rho.shape[0]
     dx = 1.0 / nx
     # in hydro_io.py/read_twostate_ic: rho[:nxhalf] = rhoL, nxhalf = nx // 2
-    i = ( nx // 2 - 1)
+    i = nx // 2 - 1
 
     rhoL = rho[i]
     rhoR = rho[i + 1]
