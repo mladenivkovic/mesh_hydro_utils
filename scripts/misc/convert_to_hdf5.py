@@ -9,8 +9,15 @@
 #   convert_to_hdf5.py <file1> <file2> ... <fileN>
 # ------------------------------------------------------------------------------------
 
-from sys import argv
-import h5py
+from sys import argv, exit
+
+try:
+    import h5py
+except ImportError:
+    print("Couldn't import h5py. Did you install with the hdf5 option enabled?")
+    exit(1)
+
+
 
 
 from mesh_hydro_utils import (
@@ -19,6 +26,10 @@ from mesh_hydro_utils import (
 
 
 def dump_hdf5(fname):
+    """
+    Dump output from file `fname` as a hdf5 file.
+    """
+
     ndim, rho, u, p, t, step = read_output(fname)
     outfile = fname.replace("out", "hdf5")
     print("Writing output file", outfile)
