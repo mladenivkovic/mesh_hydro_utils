@@ -51,8 +51,9 @@ def plot_1D(rho, u, p, draw_legend=False, fig=None, kwargs={}):
 
     rho, u, p:   np arrays of physical quantities
     draw_legend: whether to draw a legend.
-    fig:         a pyplot.figure object. If present, plots will be added to the axes of the figure.
-                 if not, a new one will be generated and returned.
+    fig:         a pyplot.figure object. If present, plots will be added to the
+                 axes of the figure. If not, a new one will be generated and
+                 returned.
 
     kwargs get passed to matplotlib.pyplot.plot(), and need to be a dictionnary
 
@@ -98,8 +99,9 @@ def plot_1D_density_only(rho, draw_legend=False, fig=None, kwargs={}):
 
     rho, u, p:   np arrays of physical quantities
     draw_legend: whether to draw a legend.
-    fig:         a pyplot.figure object. If present, plots will be added to the axes of the figure.
-                 if not, a new one will be generated and returned.
+    fig:         a pyplot.figure object. If present, plots will be added to the
+                 axes of the figure. If not, a new one will be generated and
+                 returned.
 
     kwargs get passed to matplotlib.pyplot.plot(), and need to be a dictionnary
 
@@ -135,9 +137,11 @@ def plot_2D_density_only(rho, t=None, kwargs={}):
     """
     Create a plot from 2D data. Plots density only.
 
-    rho:         np arrays of physical quantities
-    fname:       filename of the data you are plotting. Will be used to generate image filename
-    t:           time of simulation, optional. Will be put on the plot to label it. If it is a string, it will be used just as the label.
+    rho:        np arrays of physical quantities
+    fname:      filename of the data you are plotting. Will be used to generate
+                image filename
+    t:          time of simulation, optional. Will be put on the plot to label
+                it. If it is a string, it will be used just as the label.
 
     kwargs get passed to matplotlib.pyplot.imshow(), and need to be a dictionnary
 
@@ -179,10 +183,11 @@ def plot_2D_density_only(rho, t=None, kwargs={}):
 def plot_2D(rho, u, p, t=None, kwargs={}):
     """
     Create a plot from 2D data.
-    rho, u, p:   np arrays of physical quantities
-    t:           time of the simulation
-    fig:         a pyplot.figure object. If present, plots will be added to the axes of the figure.
-                 if not, a new one will be generated and returned.
+    rho, u, p:  np arrays of physical quantities
+    t:          time of the simulation
+    fig:        a pyplot.figure object. If present, plots will be added to the
+                axes of the figure. If not, a new one will be generated and
+                returned.
 
     kwargs get passed to matplotlib.pyplot.imshow(), and need to be a dictionnary
 

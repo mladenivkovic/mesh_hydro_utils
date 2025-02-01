@@ -13,6 +13,8 @@ def get_only_cmdlinearg():
     """
     Get the only expected cmdline argument. If there is none
     or too many, throw error.
+
+    Returns: single cmdline arg.
     """
 
     argc = len(argv)
@@ -28,6 +30,8 @@ def get_all_files_with_same_basename(fname):
     Get a list of all files with the same basename as given file <fname>.
     Basename in this case means everything before _XXXX.out, which is the
     format of the hydro output files.
+
+    Returns: list of file names (str)
     """
 
     # first generate basename

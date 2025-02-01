@@ -139,10 +139,10 @@ def read_ic(fname, nx=100):
 
     returns:
         ndim:       integer of how many dimensions we have
-        twostate:   if this is a two-state type IC file
+        twostate:   bool. Whether this is a two-state type IC file
         rho:        numpy array for density
-        u:          numpy array for velocity. In 1D: is 1D array. In 2D: is 2D array containing
-                    both ux and uy
+        u:          numpy array for velocity. In 1D: is 1D array. In 2D: is 2D array
+                    containing both ux and uy
         p:          numpy array for pressure
     """
 

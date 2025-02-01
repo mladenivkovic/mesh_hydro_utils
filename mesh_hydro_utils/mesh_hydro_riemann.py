@@ -4,7 +4,7 @@
 # An exact Riemann solver and solution sampler.
 #
 # For documentation on what is being computed, please refer to the documentation
-#  provided in the mesh-hydro code (https://github.com/mladenivkovic/mesh-hydro/tree)
+# provided in the mesh-hydro code (https://github.com/mladenivkovic/mesh-hydro)
 #
 # Specifically, look at https://github.com/mladenivkovic/mesh-hydro/tree/master/tex/equations
 # ------------------------------------------------------------------------------------------------
@@ -102,6 +102,9 @@ def riemann_solver(rho, u, p, t):
 def _sample_solution(rhoL, rhoR, uL, uR, ustar, pL, pR, pstar, xt):
     """
     Sample the solution at the place xt = x/t
+
+    (See section 4.2, eq. 35 in
+    mesh-hydro/tex/equations/equations_and_implementation_details.pdf)
     """
 
     aL = _soundspeed(pL, rhoL)
@@ -196,6 +199,8 @@ def _find_star_state(rhoL, uL, pL, rhoR, uR, pR):
     """
     Find the star state pressure and velocities following Toro 1999
     returns: pstar, ustar: stare state pressure and velocity
+
+    (See section 4.2.5 in mesh-hydro/tex/equations/equations_and_implementation_details.pdf)
     """
 
     aL = _soundspeed(pL, rhoL)
@@ -245,7 +250,9 @@ def _find_star_state(rhoL, uL, pL, rhoR, uR, pR):
 
 def _f_K(pstar, pK, AK, BK, aK):
     """
-    Compute f_{K=L, R} (See section 3.2 in equations_and_implementation_details.pdf)
+    Compute f_{K=L, R}
+    (See section 4.6 in mesh-hydro/tex/equations/equations_and_implementation_details.pdf)
+
     pstar:  p in star region
     pK: pLeft or pRight
     AK : 2/(gamma + 1) / rhoK
@@ -262,7 +269,9 @@ def _f_K(pstar, pK, AK, BK, aK):
 
 def _df_Kdp(pstar, rhoK, pK, AK, BK, aK):
     """
-    Compute  del f_{K=L, R}/dp (See section 3.2 in equations_and_implementation_details.pdf)
+    Compute  del f_{K=L, R}/dp
+    (See section 4.3 in mesh-hydro/tex/equations/equations_and_implementation_details.pdf)
+
     pstar:  p in star region
     pK: pLeft or pRight
     AK : 2/(gamma + 1) / rhoK
@@ -280,6 +289,8 @@ def _df_Kdp(pstar, rhoK, pK, AK, BK, aK):
 def _A_K(rhoK):
     """
     Compute A_{L, R}
+    (See section 4.2, eq. 36 in
+    mesh-hydro/tex/equations/equations_and_implementation_details.pdf)
     """
     return 2 / (GP1 * rhoK)
 
@@ -287,6 +298,8 @@ def _A_K(rhoK):
 def _B_K(pK):
     """
     Compute B_{L,R}
+    (See section 4.2, eq. 37 in
+    mesh-hydro/tex/equations/equations_and_implementation_details.pdf)
     """
     return pK / GP1OGM1
 
@@ -301,6 +314,7 @@ def _soundspeed(p, rho):
 def _sample_vacuum_solution(rhoL, rhoR, uL, uR, pL, pR, xt):
     """
     Sample the solution in the presence of vacuum
+    (See section 4.5,4.6 in mesh-hydro/tex/equations/equations_and_implementation_details.pdf)
     """
 
     if rhoL == 0 and rhoR == 0:
