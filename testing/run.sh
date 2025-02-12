@@ -14,16 +14,39 @@ set -e
 test_ICs=true
 
 # test misc scripts?
-test_misc=false
+test_misc=true
 
 # test plotting scripts?
-test_plot=false
+test_plot=true
 
 # clean up after yourself? I.e. remove all generated files?
 cleanup=true
 
 SCRIPTDIR="../scripts"
 
+
+check_file_written() {
+    # Check that a file, provided as first cmdline arg,
+    # exists. Exit with error code if it doesn't.
+    # Usage: `check_file_written filename`
+
+    if [[ ! -f "$1" ]]; then
+        echo "Expected file" $1 "not found"
+        exit 127
+    fi
+}
+
+check_png_deleted() {
+
+    pnglist=`find . -name "*.png"`
+
+    for f in $pnglist; do
+        if [[ -f "$f" ]]; then
+            echo "File" $f "should not exist"
+            exit 127
+        fi
+    done
+}
 
 
 # ======================================
@@ -83,6 +106,7 @@ if [[ "$test_ICs" == "true" ]]; then
     diff ./uniform-2D-100.dat ./uniform-2D-100-reference.dat
 
     if [[ "$cleanup" == "true" ]]; then
+        echo "Cleaning up."
 
         rm -f advection-1D-four-shapes-256.dat
         rm -f advection-1D-gaussian-256.dat
@@ -112,11 +136,12 @@ fi
 if [[ "$test_misc" == "true" ]]; then
     echo "--- running $SCRIPTDIR/misc/convert_to_hdf5.py"
     python3 $SCRIPTDIR/misc/convert_to_hdf5.py advection-2D-0004.out
+    check_file_written ./advection-2D-0004.hdf5
+
 
     if [[ "$cleanup" == "true" ]]; then
-
+        echo "Cleaning up."
         rm  -f advection-2D-0004.hdf5
-
     fi
 
 else
@@ -132,81 +157,273 @@ fi
 
 if [[ "$test_plot" == "true" ]]; then
 
+    if [[ "$cleanup" == "true" ]]; then
+        echo "Cleaning up."
+        rm  -f *png
+        check_png_deleted
+    fi
+
     echo "--- running $SCRIPTDIR/plotting/movie_density.py advection-2D-0004.out"
     $SCRIPTDIR/plotting/movie_density.py advection-2D-0004.out
+    check_file_written advection-2D-0000-density-only.png
+    check_file_written advection-2D-0001-density-only.png
+    check_file_written advection-2D-0002-density-only.png
+    check_file_written advection-2D-0003-density-only.png
+    check_file_written advection-2D-0004-density-only.png
+    if [[ "$cleanup" == "true" ]]; then
+        echo "Cleaning up."
+        rm -f advection-2D-0000-density-only.png advection-2D-0001-density-only.png \
+            advection-2D-0002-density-only.png advection-2D-0003-density-only.png \
+            advection-2D-0004-density-only.png
+        check_png_deleted
+    fi
 
     echo "--- running $SCRIPTDIR/plotting/plot_all_2D_velnorm_individually.py advection-2D-0004.out"
     $SCRIPTDIR/plotting/plot_all_2D_velnorm_individually.py advection-2D-0004.out
+    check_file_written advection-2D-0004.png
+    if [[ "$cleanup" == "true" ]]; then
+        echo "Cleaning up."
+        rm advection-2D-0004.png
+        check_png_deleted
+    fi
 
     echo "--- running $SCRIPTDIR/plotting/plot_all_density_individually.py advection-00*out"
     $SCRIPTDIR/plotting/plot_all_density_individually.py advection-00*out
+    check_file_written advection-0000-density-only.png
+    check_file_written advection-0001-density-only.png
+    check_file_written advection-0002-density-only.png
+    check_file_written advection-0003-density-only.png
+    check_file_written advection-0004-density-only.png
+    check_file_written advection-0005-density-only.png
+    check_file_written advection-0006-density-only.png
+    check_file_written advection-0007-density-only.png
+    check_file_written advection-0008-density-only.png
+    check_file_written advection-0009-density-only.png
+    check_file_written advection-0010-density-only.png
+    check_file_written advection-0011-density-only.png
+    check_file_written advection-0012-density-only.png
+    check_file_written advection-0013-density-only.png
+
+    if [[ "$cleanup" == "true" ]]; then
+        echo "Cleaning up."
+        rm -f advection-0000-density-only.png advection-0001-density-only.png \
+             advection-0002-density-only.png advection-0003-density-only.png  \
+             advection-0004-density-only.png advection-0005-density-only.png  \
+             advection-0006-density-only.png advection-0007-density-only.png  \
+             advection-0008-density-only.png advection-0009-density-only.png  \
+             advection-0010-density-only.png advection-0011-density-only.png  \
+             advection-0012-density-only.png advection-0013-density-only.png
+        check_png_deleted
+    fi
 
     echo "--- running $SCRIPTDIR/plotting/plot_all_density_individually.py advection-2D-00*out"
     $SCRIPTDIR/plotting/plot_all_density_individually.py advection-2D-00*out
+    check_file_written advection-2D-0000-density-only.png
+    check_file_written advection-2D-0001-density-only.png
+    check_file_written advection-2D-0002-density-only.png
+    check_file_written advection-2D-0003-density-only.png
+    check_file_written advection-2D-0004-density-only.png
+    if [[ "$cleanup" == "true" ]]; then
+        echo "Cleaning up."
+        rm -f advection-2D-0000-density-only.png advection-2D-0001-density-only.png \
+            advection-2D-0002-density-only.png advection-2D-0003-density-only.png \
+            advection-2D-0004-density-only.png
+        check_png_deleted
+    fi
 
     echo "--- running $SCRIPTDIR/plotting/plot_all_density.py advection-00*out"
     $SCRIPTDIR/plotting/plot_all_density.py advection-00*out
+    check_file_written advection-density-only-overplotted.png
+    if [[ "$cleanup" == "true" ]]; then
+        echo "Cleaning up."
+        rm advection-density-only-overplotted.png
+        check_png_deleted
+    fi
 
     echo "--- running $SCRIPTDIR/plotting/plot_all_results_individually.py advection-00*out"
     $SCRIPTDIR/plotting/plot_all_results_individually.py advection-00*out
+    check_file_written advection-0000.png
+    check_file_written advection-0001.png
+    check_file_written advection-0002.png
+    check_file_written advection-0003.png
+    check_file_written advection-0004.png
+    check_file_written advection-0005.png
+    check_file_written advection-0006.png
+    check_file_written advection-0007.png
+    check_file_written advection-0008.png
+    check_file_written advection-0009.png
+    check_file_written advection-0010.png
+    check_file_written advection-0011.png
+    check_file_written advection-0012.png
+    check_file_written advection-0013.png
+    if [[ "$cleanup" == "true" ]]; then
+        echo "Cleaning up."
+        rm -f advection-0000.png advection-0001.png advection-0002.png \
+            advection-0003.png advection-0004.png advection-0005.png \
+            advection-0006.png advection-0007.png advection-0008.png \
+            advection-0009.png advection-0010.png advection-0011.png \
+            advection-0012.png advection-0013.png
+        check_png_deleted
+    fi
 
     echo "--- running $SCRIPTDIR/plotting/plot_all_results_individually.py advection-2D-00*out"
     $SCRIPTDIR/plotting/plot_all_results_individually.py advection-2D-00*out
+    check_file_written advection-2D-0000.png
+    check_file_written advection-2D-0001.png
+    check_file_written advection-2D-0002.png
+    check_file_written advection-2D-0003.png
+    check_file_written advection-2D-0004.png
+    if [[ "$cleanup" == "true" ]]; then
+        echo "Cleaning up."
+        rm -f advection-2D-0000.png advection-2D-0001.png advection-2D-0002.png \
+            advection-2D-0003.png advection-2D-0004.png
+        check_png_deleted
+    fi
 
     echo "--- running $SCRIPTDIR/plotting/plot_all_results.py advection-00*out"
     $SCRIPTDIR/plotting/plot_all_results.py advection-00*out
+    check_file_written advection-overplotted.png
+    if [[ "$cleanup" == "true" ]]; then
+        echo "Cleaning up."
+        rm -f advection-overplotted.png
+        check_png_deleted
+    fi
 
     echo "--- running $SCRIPTDIR/plotting/plot_all_riemann_results.py sod-shock-000*.out ic-twostate.dat"
     $SCRIPTDIR/plotting/plot_all_riemann_results.py sod-shock-000*.out ic-twostate.dat
+    check_file_written sod-shock-overplotted.png
+    if [[ "$cleanup" == "true" ]]; then
+        echo "Cleaning up."
+        rm -f sod-shock-overplotted.png
+        check_png_deleted
+    fi
 
     echo "--- running $SCRIPTDIR/plotting/plot_density.py advection-0009.out"
     $SCRIPTDIR/plotting/plot_density.py advection-0009.out
+    check_file_written advection-0009-density-only.png
+    if [[ "$cleanup" == "true" ]]; then
+        echo "Cleaning up."
+        rm -f advection-0009-density-only.png
+        check_png_deleted
+    fi
 
     echo "--- running $SCRIPTDIR/plotting/plot_density.py advection-2D-0004.out"
     $SCRIPTDIR/plotting/plot_density.py advection-2D-0004.out
+    check_file_written advection-2D-0004-density-only.png
+    if [[ "$cleanup" == "true" ]]; then
+        echo "Cleaning up."
+        rm -f advection-2D-0004-density-only.png
+        check_png_deleted
+    fi
 
     echo "--- running $SCRIPTDIR/plotting/plot_IC_3D.py ic-1D.dat"
     $SCRIPTDIR/plotting/plot_IC_3D.py ic-1D.dat
+    check_file_written ic-1D.png
+    if [[ "$cleanup" == "true" ]]; then
+        echo "Cleaning up."
+        rm -f ic-1D.png
+        check_png_deleted
+    fi
 
     echo "--- running $SCRIPTDIR/plotting/plot_IC_3D.py ic-2D.dat"
     $SCRIPTDIR/plotting/plot_IC_3D.py ic-2D.dat
+    check_file_written ic-2D-3D.png
+    if [[ "$cleanup" == "true" ]]; then
+        echo "Cleaning up."
+        rm -f ic-2D-3D.png
+        check_png_deleted
+    fi
 
     echo "--- running $SCRIPTDIR/plotting/plot_IC_3D.py ic-twostate.dat"
     $SCRIPTDIR/plotting/plot_IC_3D.py ic-twostate.dat
+    check_file_written ic-twostate.png
+    if [[ "$cleanup" == "true" ]]; then
+        echo "Cleaning up."
+        rm -f ic-twostate.png
+        check_png_deleted
+    fi
 
     echo "--- running $SCRIPTDIR/plotting/plot_IC.py ic-1D.dat"
     $SCRIPTDIR/plotting/plot_IC.py ic-1D.dat
+    check_file_written ic-1D.png
+    if [[ "$cleanup" == "true" ]]; then
+        echo "Cleaning up."
+        rm -f ic-1D.png
+        check_png_deleted
+    fi
 
     echo "--- running $SCRIPTDIR/plotting/plot_IC.py ic-2D.dat"
     $SCRIPTDIR/plotting/plot_IC.py ic-2D.dat
+    check_file_written ic-2D.png
+    if [[ "$cleanup" == "true" ]]; then
+        echo "Cleaning up."
+        rm -f ic-2D.png
+        check_png_deleted
+    fi
 
     echo "--- running $SCRIPTDIR/plotting/plot_IC.py ic-twostate.dat"
     $SCRIPTDIR/plotting/plot_IC.py ic-twostate.dat
+    check_file_written ic-twostate.png
+    if [[ "$cleanup" == "true" ]]; then
+        echo "Cleaning up."
+        rm -f ic-twostate.png
+        check_png_deleted
+    fi
 
     echo "--- running $SCRIPTDIR/plotting/plot_result_3D.py advection-0010.out"
     $SCRIPTDIR/plotting/plot_result_3D.py advection-0010.out
+    check_file_written advection-0010.png
+    if [[ "$cleanup" == "true" ]]; then
+        echo "Cleaning up."
+        rm -f advection-0010.png
+        check_png_deleted
+    fi
 
     echo "--- running $SCRIPTDIR/plotting/plot_result_3D.py advection-2D-0004.out"
     $SCRIPTDIR/plotting/plot_result_3D.py advection-2D-0004.out
+    check_file_written advection-2D-0004-3D.png
+    if [[ "$cleanup" == "true" ]]; then
+        echo "Cleaning up."
+        rm -f advection-2D-0004-3D.png
+        check_png_deleted
+    fi
 
     echo "--- running $SCRIPTDIR/plotting/plot_result.py advection-0010.out"
     $SCRIPTDIR/plotting/plot_result.py advection-0010.out
+    check_file_written advection-0010.png
+    if [[ "$cleanup" == "true" ]]; then
+        echo "Cleaning up."
+        rm -f advection-0010.png
+        check_png_deleted
+    fi
 
     echo "--- running $SCRIPTDIR/plotting/plot_result.py advection-2D-0004.out"
     $SCRIPTDIR/plotting/plot_result.py advection-2D-0004.out
+    check_file_written advection-2D-0004.png
+    if [[ "$cleanup" == "true" ]]; then
+        echo "Cleaning up."
+        rm -f advection-2D-0004.png
+        check_png_deleted
+    fi
 
     echo "--- running $SCRIPTDIR/plotting/plot_riemann_result.py sod-shock-0001.out ic-twostate.dat"
     $SCRIPTDIR/plotting/plot_riemann_result.py sod-shock-0001.out ic-twostate.dat
+    check_file_written sod-shock-0001.png
+    if [[ "$cleanup" == "true" ]]; then
+        echo "Cleaning up."
+        rm -f sod-shock-0001.png
+        check_png_deleted
+    fi
 
     echo "--- running $SCRIPTDIR/plotting/solve_riemann.py ic-twostate.dat 0.25"
     $SCRIPTDIR/plotting/solve_riemann.py ic-twostate.dat 0.25
-
-
+    check_file_written ic-twostate-riemann-solution.png
     if [[ "$cleanup" == "true" ]]; then
-
-        rm  -f *png
-
+        echo "Cleaning up."
+        rm -f ic-twostate-riemann-solution.png
+        check_png_deleted
     fi
+
 
 else
     echo "Skipping plotting scripts."
