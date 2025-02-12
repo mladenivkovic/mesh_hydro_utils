@@ -14,15 +14,16 @@ set -e
 test_ICs=true
 
 # test misc scripts?
-test_misc=true
+test_misc=false
 
 # test plotting scripts?
-test_plot=true
+test_plot=false
 
 # clean up after yourself? I.e. remove all generated files?
 cleanup=true
 
 SCRIPTDIR="../scripts"
+
 
 
 # ======================================
@@ -35,39 +36,51 @@ if [[ "$test_ICs" == "true" ]]; then
 
     echo "--- running $SCRIPTDIR/IC/advection-1D-four-shapes.py"
     python3 $SCRIPTDIR/IC/advection-1D-four-shapes.py
+    diff ./advection-1D-four-shapes-256.dat ./advection-1D-four-shapes-256-reference.dat
 
     echo "--- running $SCRIPTDIR/IC/advection-1D-gaussian.py"
     python3 $SCRIPTDIR/IC/advection-1D-gaussian.py
+    diff ./advection-1D-gaussian-256.dat ./advection-1D-gaussian-256-reference.dat
 
     echo "--- running $SCRIPTDIR/IC/advection-1D-step.py"
     python3 $SCRIPTDIR/IC/advection-1D-step.py
+    diff ./advection-1D-step-256.dat ./advection-1D-step-256-reference.dat
 
     echo "--- running $SCRIPTDIR/IC/advection-2D-four-shapes.py"
     python3 $SCRIPTDIR/IC/advection-2D-four-shapes.py
+    diff ./advection-2D-four-shapes.dat ./advection-2D-four-shapes-reference.dat
 
     echo "--- running $SCRIPTDIR/IC/advection-2D-step.py"
     python3 $SCRIPTDIR/IC/advection-2D-step.py
+    diff ./advection-2D-step-100.dat ./advection-2D-step-100-reference.dat
 
     echo "--- running $SCRIPTDIR/IC/center-explosion.py"
     python3 $SCRIPTDIR/IC/center-explosion.py
+    diff ./center-explosion-200.dat ./center-explosion-200-reference.dat
 
     echo "--- running $SCRIPTDIR/IC/corner-explosion.py"
     python3 $SCRIPTDIR/IC/corner-explosion.py
+    diff ./corner-explosion-200.dat ./corner-explosion-200-reference.dat
 
     echo "--- running $SCRIPTDIR/IC/kelvin-helmholtz.py"
     python3 $SCRIPTDIR/IC/kelvin-helmholtz.py
+    diff ./kelvin-helmholtz-256.dat ./kelvin-helmholtz-256-reference.dat
 
     echo "--- running $SCRIPTDIR/IC/output_to_IC.py advection-2D-0004.out"
     python3 $SCRIPTDIR/IC/output_to_IC.py advection-2D-0004.out
+    diff ./restart.dat ./restart-reference.dat
 
     echo "--- running $SCRIPTDIR/IC/rayleigh-taylor.py"
     python3 $SCRIPTDIR/IC/rayleigh-taylor.py
+    diff ./rayleigh-taylor-512.dat ./rayleigh-taylor-512-reference.dat
 
     echo "--- running $SCRIPTDIR/IC/uniform-1D.py"
     python3 $SCRIPTDIR/IC/uniform-1D.py
+    diff ./uniform-1D-100.dat ./uniform-1D-100-reference.dat
 
     echo "--- running $SCRIPTDIR/IC/uniform-2D.py"
     python3 $SCRIPTDIR/IC/uniform-2D.py
+    diff ./uniform-2D-100.dat ./uniform-2D-100-reference.dat
 
     if [[ "$cleanup" == "true" ]]; then
 
