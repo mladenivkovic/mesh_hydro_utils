@@ -14,7 +14,9 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable, axes_size
 from mpl_toolkits.mplot3d import Axes3D
 
 import numpy as np
+import shutil
 
+usetex = shutil.which("tex") is not None
 
 # Plot parameters
 params = {
@@ -26,7 +28,7 @@ params = {
     "legend.fontsize": 16,
     "xtick.labelsize": 14,
     "ytick.labelsize": 14,
-    "text.usetex": True,
+    "text.usetex": usetex,
     "figure.subplot.left": 0.05,
     "figure.subplot.right": 0.97,
     "figure.subplot.bottom": 0.12,
@@ -170,7 +172,10 @@ def plot_2D_density_only(rho, t=None, kwargs={}):
         if isinstance(t, str):
             text = t
         elif isinstance(t, float):
-            text = r"$t = ${0:.3f}".format(t)
+            if usetex:
+                text = r"$t = ${0:.3f}".format(t)
+            else:
+                text = "t = {0:.3f}".format(t)
         else:
             raise ValueError(
                 "Got weird data type for label (t). t=", t, "type(t)=", type(t)
@@ -230,7 +235,10 @@ def plot_2D(rho, u, p, t=None, kwargs={}):
         if isinstance(t, str):
             text = t
         elif isinstance(t, float):
-            text = r"$t = ${0:.3f}".format(t)
+            if usetex:
+                text = r"$t = ${0:.3f}".format(t)
+            else:
+                text = "t = {0:.3f}".format(t)
         else:
             raise ValueError(
                 "Got weird data type for label (t). t=", t, "type(t)=", type(t)
@@ -285,7 +293,10 @@ def plot_2D_velnorm(rho, u, p, t=None, kwargs={}):
         if isinstance(t, str):
             text = t
         elif isinstance(t, float):
-            text = r"$t = ${0:.3f}".format(t)
+            if usetex:
+                text = r"$t = ${0:.3f}".format(t)
+            else:
+                text = "t = {0:.3f}".format(t)
         else:
             raise ValueError(
                 "Got weird data type for label (t). t=", t, "type(t)=", type(t)
@@ -341,7 +352,10 @@ def plot_2D_in_3D(rho, u, p, t=None, kwargs={}):
         if isinstance(t, str):
             text = t
         elif isinstance(t, float):
-            text = r"$t = ${0:.3f}".format(t)
+            if usetex:
+                text = r"$t = ${0:.3f}".format(t)
+            else:
+                text = "t = {0:.3f}".format(t)
         else:
             raise ValueError(
                 "Got weird data type for label (t). t=", t, "type(t)=", type(t)
